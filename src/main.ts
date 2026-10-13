@@ -1,5 +1,6 @@
 import './style.css';
 import { CharSheet } from './components/char-sheet/char-sheet.ts';
+import { Header } from './components/header/header.ts';
 
 const bgImages = import.meta.glob<{ default: string }>('./assets/*.webp', {
   eager: true,
@@ -15,5 +16,6 @@ bgImage.classList.add('bg-image');
 bgImage.style.backgroundImage = `url(${bgUrl})`;
 
 const charSheet = new CharSheet();
+const header = new Header();
 
-document.body.append(bgImage, charSheet.getElement());
+document.body.append(header.getElement(), charSheet.getElement(), bgImage);

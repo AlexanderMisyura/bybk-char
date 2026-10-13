@@ -12,6 +12,10 @@
   }
 }
 
+body:has(header[aria-expanded='true']) .char-sheet {
+  padding-top: 4rem;
+}
+
 .flex-wrapper {
   display: flex;
 }

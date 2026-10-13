@@ -3,12 +3,9 @@ import { textarea, input, label, form, p, div, span } from '@/components/utils';
 import { LesserStats } from '../lesser-stats/lesser-stats';
 import { MainStats } from '../main-stats/main-stats';
 import { Skills } from '../skills/skills';
-import { ThemeSelector } from '../theme-selector/theme-selector';
 import type { Character } from '@/models/character';
 import { getCharData, setCharData } from '@/utils/char-data';
 import styles from './char-sheet.module.css';
-
-const themeSelector = new ThemeSelector();
 
 export class CharSheet extends BaseComponent<'div'> {
   private character: Character = getCharData();
@@ -43,7 +40,6 @@ export class CharSheet extends BaseComponent<'div'> {
       div(
         { classes: [styles.flexWrapperName] },
         this.nameInput,
-        themeSelector,
       ),
     ),
 
