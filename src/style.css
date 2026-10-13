@@ -9,8 +9,11 @@
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
+  --accent-alt: #e13e37;
   --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-bg-alt: rgba(225, 62, 55, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
+  --accent-border-alt: rgba(225, 62, 55, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -18,6 +21,8 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+
+  --page-max-width: 900px;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -43,8 +48,11 @@
   --border: #2e303a;
   --code-bg: #1f2028;
   --accent: #c084fc;
+  --accent-alt: #df736f;
   --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-bg-alt: rgba(223, 115, 111, 0.15);
   --accent-border: rgba(192, 132, 252, 0.5);
+  --accent-border-alt: rgba(223, 115, 111, 0.5);
   --social-bg: rgba(47, 48, 58, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
@@ -63,8 +71,11 @@
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
+    --accent-alt: #df736f;
     --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-bg-alt: rgba(223, 115, 111, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
+    --accent-border-alt: rgba(223, 115, 111, 0.5);
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
@@ -122,8 +133,19 @@ select,
 }
 
 ::picker(select) {
-  padding: 0.5rem 0 0.5rem;
   border: 1px solid var(--border);
   border-radius: 4px;
   box-shadow: 0 2px 4px var(--shadow);
+}
+
+button {
+  transition: 0.2s;
+  cursor: pointer;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--accent-bg-alt);
+      border-color: var(--accent-border-alt);
+    }
+  }
 }
