@@ -20,3 +20,5 @@ export const INITIAL_CHARACTER: Character = {
   })),
   other: '',
 };
+
+export const ANIMATION_TIMING = 200;
