@@ -22,6 +22,7 @@ export class Skills extends BaseComponent<'div'> {
         textarea({
           value: character?.skills[index]?.description ?? '',
           classes: [styles.description],
+          id: `skill-description-${index}`,
         }),
     );
 
@@ -29,6 +30,7 @@ export class Skills extends BaseComponent<'div'> {
       input({
         value: character?.skills[index]?.usage ?? '',
         classes: [charStyles.textInput, styles.usageInput],
+        id: `skill-usage-${index}`,
         type: 'number',
         min: '0',
         max: '5',
@@ -55,5 +57,15 @@ export class Skills extends BaseComponent<'div'> {
       description: description.getElement().value,
       usage: this.skillsUsage[index].getElement().value,
     }));
+  }
+
+  public updateSkills(skills: Character['skills']) {
+    this.skillDescriptions.forEach(
+      (description, index) =>
+        (description.getElement().value = skills[index].description),
+    );
+    this.skillsUsage.forEach(
+      (usage, index) => (usage.getElement().value = skills[index].usage),
+    );
   }
 }

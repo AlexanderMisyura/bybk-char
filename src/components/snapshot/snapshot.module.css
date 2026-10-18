@@ -1,0 +1,53 @@
+.text-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+
+  &:invalid {
+    border-color: red;
+  }
+}
+
+.button {
+  padding: 0.3rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  color: inherit;
+  background-color: var(--bg);
+  font-size: inherit;
+  flex: auto;
+  min-height: 40px;
+  width: 115px;
+
+  @media (max-width: 550px) {
+    font-size: 18px;
+    min-height: 50px;
+    width: 250px;
+  }
+}
+
+.form-flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modal-heading {
+  text-align: center;
+  text-wrap: balance;
+  font-size: 18px;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-evenly;
+}

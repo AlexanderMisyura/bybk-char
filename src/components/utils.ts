@@ -30,6 +30,15 @@ const button = (
     ...children,
   );
 
+const datalist = (
+  properties: UtilityTagProperties<'datalist'>,
+  ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
+): BaseComponent<'datalist'> =>
+  new BaseComponent<'datalist'>(
+    { ...properties, elementTag: 'datalist' },
+    ...children,
+  );
+
 const details = (
   properties: UtilityTagProperties<'details'>,
   ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
@@ -136,6 +145,7 @@ export {
   a,
   aside,
   button,
+  datalist,
   details,
   div,
   form,

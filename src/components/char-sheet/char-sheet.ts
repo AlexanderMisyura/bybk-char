@@ -4,11 +4,15 @@ import { LesserStats } from '../lesser-stats/lesser-stats';
 import { MainStats } from '../main-stats/main-stats';
 import { Skills } from '../skills/skills';
 import type { Character } from '@/models/character';
-import { getCharData, setCharData } from '@/utils/char-data';
+import {
+  getCharDataFromStorage,
+  setCharDataToStorage,
+} from '@/utils/char-data';
 import styles from './char-sheet.module.css';
+import { CUSTOM_EVENTS } from '@/models/constants';
 
 export class CharSheet extends BaseComponent<'div'> {
-  private character: Character = getCharData();
+  private character: Character = getCharDataFromStorage();
 
   private nameInput: BaseComponent<'input'> = input({
     value: this.character?.name ?? '',
@@ -37,10 +41,7 @@ export class CharSheet extends BaseComponent<'div'> {
     div(
       { classes: [styles.container] },
       label({ htmlFor: 'name' }, span({ text: 'ИМЯ ПЕРСОНАЖА' })),
-      div(
-        { classes: [styles.flexWrapperName] },
-        this.nameInput,
-      ),
+      div({ classes: [styles.flexWrapperName] }, this.nameInput),
     ),
 
     this.mainStats,
@@ -72,25 +73,62 @@ export class CharSheet extends BaseComponent<'div'> {
 
     this.appendChildren(this.form);
 
-    this.form.getElement().addEventListener('submit', (e: Event) => {
+    this.form.addListener('submit', (e: Event) => {
       e.preventDefault();
     });
 
-    this.form.getElement().addEventListener('input', () => {
-      this.character.name = this.nameInput.getElement().value;
-      this.character.maxVitality =
-        this.mainStats.maxVitalityInput.getElement().value;
-      this.character.vitality = this.mainStats.vitalityInput.getElement().value;
-      this.character.physical = this.mainStats.physicalInput.getElement().value;
-      this.character.mental = this.mainStats.mentalInput.getElement().value;
-      this.character.armor = this.lesserStats.armorInput.getElement().value;
-      this.character.damageModifier =
-        this.lesserStats.damageInput.getElement().value;
-      this.character.items = this.itemsInput.getElement().value;
-      this.character.skills = this.skills.getSkills();
-      this.character.other = this.otherInput.getElement().value;
-
-      setCharData(this.character);
+    this.form.addListener('input', () => {
+      this.updateCharData();
+      setCharDataToStorage(this.character);
     });
+
+    window.addEventListener(CUSTOM_EVENTS.SNAPSHOT_LOADED, () => {
+      const charData = getCharDataFromStorage();
+      this.updateCharListFields(charData);
+    });
+  }
+
+  public updateCharData() {
+    this.character.name = this.nameInput.getElement().value.trim().trim();
+    this.character.maxVitality = this.mainStats.maxVitalityInput
+      .getElement()
+      .value.trim();
+    this.character.vitality = this.mainStats.vitalityInput
+      .getElement()
+      .value.trim();
+    this.character.physical = this.mainStats.physicalInput
+      .getElement()
+      .value.trim();
+    this.character.mental = this.mainStats.mentalInput
+      .getElement()
+      .value.trim();
+    this.character.armor = this.lesserStats.armorInput
+      .getElement()
+      .value.trim();
+    this.character.damageModifier = this.lesserStats.damageInput
+      .getElement()
+      .value.trim();
+    this.character.items = this.itemsInput.getElement().value.trim();
+    this.character.skills = this.skills.getSkills();
+    this.character.other = this.otherInput.getElement().value.trim();
+
+    const charData = getCharDataFromStorage();
+    this.character.id = charData.id ?? '';
+    this.character.timestamp = charData.timestamp ?? '';
+  }
+
+  public updateCharListFields(character: Character) {
+    this.nameInput.getElement().value = character.name;
+    this.mainStats.maxVitalityInput.getElement().value = character.maxVitality;
+    this.mainStats.vitalityInput.getElement().value = character.vitality;
+    this.mainStats.physicalInput.getElement().value = character.physical;
+    this.mainStats.mentalInput.getElement().value = character.mental;
+    this.lesserStats.armorInput.getElement().value = character.armor;
+    this.lesserStats.damageInput.getElement().value = character.damageModifier;
+    this.itemsInput.getElement().value = character.items;
+    this.skills.updateSkills(character.skills);
+    this.otherInput.getElement().value = character.other;
+
+    this.updateCharData();
   }
 }
