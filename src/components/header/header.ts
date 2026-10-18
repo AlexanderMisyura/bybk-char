@@ -32,7 +32,6 @@ export class Header extends BaseComponent<'header'> {
 
       if (window.innerWidth <= 550) {
         if (isExpanded && history.length > 1) {
-          console.log(history.length);
           history.back();
         } else {
           history.pushState({ menuOpen: true }, '');
