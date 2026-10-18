@@ -6,14 +6,17 @@
   max-width: var(--page-max-width);
   margin: 0 auto;
   background-color: var(--bg-semi-transparent);
+  transition: padding-top 0.2s;
 
   @media (max-width: 550px) {
-    padding: 0.5rem;
+    padding: 1.5rem 0.5rem 2.5rem;
   }
 }
 
 body:has(header[aria-expanded='true']) .char-sheet {
-  padding-top: 4rem;
+  @media (min-width: 551px) {
+    padding-top: 4rem;
+  }
 }
 
 .flex-wrapper {

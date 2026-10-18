@@ -24,3 +24,14 @@
   box-shadow: var(--shadow);
   background-color: var(--bg);
 }
+
+.text-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+
+  &:invalid {
+    border-color: red;
+  }
+}

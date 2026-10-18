@@ -3,7 +3,6 @@ import { BaseComponent } from '../base';
 import { button, div, input, label, span } from '../utils';
 import { DAMAGE_DIE } from '@/models/constants';
 import styles from './lesser-stats.module.css';
-import charStyles from '../char-sheet/char-sheet.module.css';
 
 export class LesserStats extends BaseComponent<'div'> {
   public damageOutput: BaseComponent<'span'>;
@@ -23,7 +22,7 @@ export class LesserStats extends BaseComponent<'div'> {
     this.armorInput = input({
       value: character.armor,
       type: 'number',
-      classes: [charStyles.textInput],
+      classes: [styles.textInput],
       min: '0',
       max: '2',
     });
@@ -32,7 +31,7 @@ export class LesserStats extends BaseComponent<'div'> {
       value: character.damageModifier,
       type: 'number',
       id: 'damage',
-      classes: [charStyles.textInput],
+      classes: [styles.textInput],
       step: '2',
       min: '-4',
       max: '2',
