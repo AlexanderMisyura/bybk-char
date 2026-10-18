@@ -1,4 +1,6 @@
 export type Character = {
+  id?: string;
+  timestamp?: string;
   name: string;
   maxVitality: string;
   vitality: string;
@@ -13,3 +15,5 @@ export type Character = {
   }[];
   other: string;
 };
+
+export type CharacterSaved = Character & { id: string, timestamp: string };

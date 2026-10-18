@@ -1,6 +1,6 @@
 import { BaseComponent } from '../base';
 import { button, option, span } from '../utils';
-import { STORAGE_THEME_KEY } from '@/models/constants';
+import { STORAGE_KEY } from '@/models/constants';
 import styles from './theme-selector.module.css';
 
 type ThemeOptions = {
@@ -30,7 +30,7 @@ export class ThemeSelector extends BaseComponent<'select'> {
 
     this.selectedTheme =
       (localStorage.getItem(
-        STORAGE_THEME_KEY,
+        STORAGE_KEY.THEME,
       ) as ThemeOptions[keyof ThemeOptions]) ?? this.options.system;
 
     this.appendChildren(
@@ -68,7 +68,7 @@ export class ThemeSelector extends BaseComponent<'select'> {
         .addClasses(styles[`${this.selectedTheme}Icon`]);
 
       document.documentElement.dataset.theme = this.selectedTheme;
-      localStorage.setItem(STORAGE_THEME_KEY, this.selectedTheme);
+      localStorage.setItem(STORAGE_KEY.THEME, this.selectedTheme);
     });
   }
 }

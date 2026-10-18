@@ -1,11 +1,21 @@
 import type { Character } from './character';
 
-export const STORAGE_CHAR_KEY = 'BYBK_char';
-export const STORAGE_THEME_KEY = 'BYBK_theme';
+export const STORAGE_KEY = {
+  CHAR: 'BYBK_char',
+  THEME: 'BYBK_theme',
+  SNAPSHOTS: 'BYBK_snapshots',
+}
+
+export const CUSTOM_EVENTS = {
+  SNAPSHOT_LOADED: 'snapshot-loaded',
+}
+
 export const DAMAGE_DIE = 6;
 export const SKILLS_NUMBER = 4;
 
 export const INITIAL_CHARACTER: Character = {
+  id: '',
+  timestamp: '',
   name: '',
   maxVitality: '',
   vitality: '',
