@@ -4,6 +4,14 @@ import { ANIMATION_TIMING } from '@/models/constants';
 
 import styles from './modal.module.css';
 
+type ModalOptions = {
+  canBeClosed?: boolean;
+  hasCloseButton?: boolean;
+  isCloseOnClickWithin?: boolean;
+  isScrollBlocked?: boolean;
+  needAnimationDelay?: boolean;
+};
+
 class Modal extends BaseComponent<'dialog'> {
   public modalControls = {
     showModal: this.showModal.bind(this),
@@ -20,6 +28,7 @@ class Modal extends BaseComponent<'dialog'> {
   private isCloseOnClickWithin = false;
   private isOpen = false;
   private isScrollBlocked = true;
+  private needAnimationDelay = true;
 
   constructor() {
     super({ elementTag: 'dialog', classes: [styles.modal] });
@@ -30,21 +39,18 @@ class Modal extends BaseComponent<'dialog'> {
     component: BaseComponent<keyof HTMLElementTagNameMap>,
     {
       canBeClosed = true,
-      hasCloseButton = true,
+      hasCloseButton = false,
       isCloseOnClickWithin = false,
       isScrollBlocked = true,
-    }: {
-      canBeClosed?: boolean;
-      hasCloseButton?: boolean;
-      isCloseOnClickWithin?: boolean;
-      isScrollBlocked?: boolean;
-    } = {},
+      needAnimationDelay = true,
+    }: ModalOptions = {},
   ): void {
     if (this.isOpen) return;
 
     this.canBeClosed = canBeClosed;
     this.isCloseOnClickWithin = isCloseOnClickWithin;
     this.isScrollBlocked = isScrollBlocked;
+    this.needAnimationDelay = needAnimationDelay;
 
     if (this.isScrollBlocked) {
       document.body.classList.add(styles.noScroll);
@@ -72,6 +78,32 @@ class Modal extends BaseComponent<'dialog'> {
     this.canBeClosed = true;
   }
 
+  public renewModalContent(
+    component: BaseComponent<keyof HTMLElementTagNameMap>,
+    {
+      canBeClosed = true,
+      isCloseOnClickWithin = false,
+      isScrollBlocked = true,
+      needAnimationDelay = true,
+    }: Omit<ModalOptions, 'hasCloseButton'> = {},
+  ) {
+    this.canBeClosed = canBeClosed;
+    this.isCloseOnClickWithin = isCloseOnClickWithin;
+    this.isScrollBlocked = isScrollBlocked;
+    this.needAnimationDelay = needAnimationDelay;
+
+    if (this.isScrollBlocked) {
+      document.body.classList.add(styles.noScroll);
+    }
+
+    this.isOpen = true;
+
+    if (this.content) {
+      this.content.getElement().replaceChildren(component.getElement());
+    }
+
+  }
+
   private addListeners(): void {
     this.addListener('click', (event: Event) => {
       if (this.isCloseOnClickWithin) this.closeModal();
@@ -79,11 +111,14 @@ class Modal extends BaseComponent<'dialog'> {
     });
 
     this.addListener('close', () => {
-      setTimeout(() => {
-        this.content?.removeSelf();
-        this.getElement().remove();
-        this.isOpen = false;
-      }, ANIMATION_TIMING);
+      setTimeout(
+        () => {
+          this.content?.removeSelf();
+          this.getElement().remove();
+          this.isOpen = false;
+        },
+        this.needAnimationDelay ? ANIMATION_TIMING : 0,
+      );
     });
 
     this.addListener('keydown', (event: Event) => {
