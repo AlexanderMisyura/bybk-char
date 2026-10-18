@@ -34,7 +34,7 @@ export class Snapshot extends BaseComponent<'div'> {
   });
 
   private snapshotSelect: BaseComponent<'select'> = select({
-    classes: [styles.select],
+    classes: [styles.selector],
     id: 'snapshot-select',
     required: true,
   });
@@ -281,7 +281,7 @@ export class Snapshot extends BaseComponent<'div'> {
 
   private getSnapshotSelect(): BaseComponent<'select'> {
     const snapshots = getSnapshotsFromStorage().toSorted(
-      (a, b) => Number(b.timestamp) - Number(a.timestamp),
+      (a, b) => a.name.localeCompare(b.name),
     );
 
     this.snapshotSelect.getElement().value = snapshots[0].id;
@@ -289,7 +289,11 @@ export class Snapshot extends BaseComponent<'div'> {
       .getElement()
       .replaceChildren(
         ...snapshots.map((snapshot) =>
-          option({ value: snapshot.id, text: snapshot.id }).getElement(),
+          option({
+            value: snapshot.id,
+            text: snapshot.id,
+            classes: [styles.option],
+          }).getElement(),
         ),
       );
 

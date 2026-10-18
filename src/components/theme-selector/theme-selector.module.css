@@ -5,6 +5,7 @@
   box-shadow: var(--shadow);
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.2s, border-color 0.2s;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -14,7 +15,7 @@
   }
 }
 
-.selectedContent {
+.selected-content {
   width: 26px;
   mask-size: 100%;
 }
