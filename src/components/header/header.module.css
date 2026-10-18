@@ -98,12 +98,11 @@
   mask-position: center;
   mask-repeat: no-repeat;
   color: inherit;
-  transform: rotate(0);
+  transform: rotate(0) scale(70%);
   transition: 0.2s;
-  scale: 70%;
 
   @media (max-width: 550px) {
-    transform: rotate(90deg);
+    transform: rotate(90deg) scale(70%);
   }
 }
 
@@ -113,10 +112,10 @@
       transform: translateY(0);
     }
     .toggle-icon {
-      transform: rotate(180deg);
+      transform: rotate(180deg) scale(70%);
 
       @media (max-width: 550px) {
-        transform: rotate(270deg);
+        transform: rotate(270deg)  scale(70%);
       }
     }
   }
