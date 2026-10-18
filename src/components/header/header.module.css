@@ -1,6 +1,10 @@
 .wrapper {
   max-width: var(--page-max-width);
   margin: auto;
+
+  @media (max-width: 550px) {
+    height: 100%;
+  }
 }
 
 .container {
@@ -9,6 +13,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    height: 100%;
+  }
 }
 
 .header {
@@ -25,10 +36,37 @@
     transform: translateY(0);
     box-shadow: var(--shadow);
   }
+
+  @media (max-width: 550px) {
+    transform: translate(100%, 0);
+    height: 100dvh;
+
+    &[aria-expanded='true'] {
+      transform: translate(0, 0);
+    }
+  }
+}
+
+.flex-wrapper {
+  display: flex;
+  @media (max-width: 550px) {
+    flex-grow: 1;
+    align-items: center;
+  }
+}
+
+:root:has(header[aria-expanded='true']) {
+  @media (max-width: 550px) {
+    overflow: hidden;
+  }
 }
 
 .logo {
   height: 25px;
+
+  @media (max-width: 550px) {
+    height: unset;
+  }
 }
 
 .toggle-button {
@@ -44,6 +82,13 @@
 
   transform: translateY(58px);
   transition: 0.2s;
+
+  @media (max-width: 550px) {
+    position: fixed;
+    top: 0.5rem;
+    right: 1rem;
+    transform: translate(-100dvw, 0);
+  }
 }
 
 .toggle-icon {
@@ -55,6 +100,11 @@
   color: inherit;
   transform: rotate(0);
   transition: 0.2s;
+  scale: 70%;
+
+  @media (max-width: 550px) {
+    transform: rotate(90deg);
+  }
 }
 
 .header {
@@ -64,6 +114,10 @@
     }
     .toggle-icon {
       transform: rotate(180deg);
+
+      @media (max-width: 550px) {
+        transform: rotate(270deg);
+      }
     }
   }
 }
@@ -82,4 +136,17 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.theme-selector-container {
+  @media (max-width: 550px) {
+    position: fixed;
+    top: 0.5rem;
+    left: 1rem;
+  }
 }
