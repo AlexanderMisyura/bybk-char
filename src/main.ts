@@ -1,6 +1,6 @@
 import './style.css';
-import { CharSheet } from './components/char-sheet/char-sheet.ts';
-import { Header } from './components/header/header.ts';
+import { CharSheet } from './components/char-sheet/char-sheet';
+import { Header } from './components/header/header';
 
 const bgImages = import.meta.glob<{ default: string }>('./assets/*.webp', {
   eager: true,
