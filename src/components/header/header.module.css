@@ -31,6 +31,7 @@
   box-shadow: 0 0 0 0 #ffffff00;
   transition: transform 0.2s;
   font-size: 16px;
+  height: 56px;
 
   &[aria-expanded='true'] {
     transform: translateY(0);
@@ -80,7 +81,7 @@
   color: var(--text);
   font-size: inherit;
 
-  transform: translateY(58px);
+  transform: translateY(56px);
   transition: 0.2s;
 
   @media (max-width: 550px) {
@@ -143,6 +144,8 @@
 }
 
 .theme-selector-container {
+  height: 40px;
+
   @media (max-width: 550px) {
     position: fixed;
     top: 0.5rem;
