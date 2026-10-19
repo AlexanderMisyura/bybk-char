@@ -301,16 +301,18 @@ export class Snapshot extends BaseComponent<'div'> {
   }
 
   private saveSnapshot(snapshotName: string) {
+    const timestamp = Date.now().toString();
     const character = getCharDataFromStorage();
+
     setSnapshotToStorage({
       ...character,
       id: snapshotName,
-      timestamp: Date.now().toString(),
+      timestamp,
     });
     setCharDataToStorage({
       ...character,
       id: snapshotName,
-      timestamp: Date.now().toString(),
+      timestamp,
     });
   }
 
