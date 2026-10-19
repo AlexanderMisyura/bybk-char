@@ -59,6 +59,8 @@ export class Snapshot extends BaseComponent<'div'> {
     },
   });
 
+  private modalCallback: ((event?: Event) => void) | null = null;
+
   constructor() {
     super({
       elementTag: 'div',
@@ -120,7 +122,15 @@ export class Snapshot extends BaseComponent<'div'> {
             classes: [styles.button],
             text: 'Сохранить',
             onclick: () => {
-              modalController.renewModalContent(this.getSnapshotSaveForm());
+              const getSnapshotLoadForm = this.getSnapshotLoadForm.bind(this);
+              this.modalCallback = (event) => {
+                event?.preventDefault();
+                modalController.renewModalContent(getSnapshotLoadForm());
+                this.modalCallback = null;
+              };
+              modalController.renewModalContent(this.getSnapshotSaveForm(), {
+                beforeCloseCallback: this.modalCallback,
+              });
             },
           }),
           button({
@@ -205,6 +215,9 @@ export class Snapshot extends BaseComponent<'div'> {
           ) {
             modalController.renewModalContent(
               this.getConfirmExistedForm(snapshotName),
+              {
+                beforeCloseCallback: this.modalCallback ?? null,
+              },
             );
 
             return;
@@ -280,22 +293,20 @@ export class Snapshot extends BaseComponent<'div'> {
   }
 
   private getSnapshotSelect(): BaseComponent<'select'> {
-    const snapshots = getSnapshotsFromStorage().toSorted(
-      (a, b) => a.name.localeCompare(b.name),
+    const snapshots = getSnapshotsFromStorage().toSorted((a, b) =>
+      a.name.localeCompare(b.name),
     );
 
     this.snapshotSelect.getElement().value = snapshots[0].id;
-    this.snapshotSelect
-      .getElement()
-      .replaceChildren(
-        ...snapshots.map((snapshot) =>
-          option({
-            value: snapshot.id,
-            text: snapshot.id,
-            classes: [styles.option],
-          }).getElement(),
-        ),
-      );
+    this.snapshotSelect.getElement().replaceChildren(
+      ...snapshots.map((snapshot) =>
+        option({
+          value: snapshot.id,
+          text: snapshot.id,
+          classes: [styles.option],
+        }).getElement(),
+      ),
+    );
 
     return this.snapshotSelect;
   }

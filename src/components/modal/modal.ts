@@ -10,6 +10,7 @@ type ModalOptions = {
   isCloseOnClickWithin?: boolean;
   isScrollBlocked?: boolean;
   needAnimationDelay?: boolean;
+  beforeCloseCallback?: ((event?: Event) => void) | null;
 };
 
 class Modal extends BaseComponent<'dialog'> {
@@ -29,6 +30,8 @@ class Modal extends BaseComponent<'dialog'> {
   private isOpen = false;
   private isScrollBlocked = true;
   private needAnimationDelay = true;
+  private beforeCloseCallback: ((event?: Event) => void) | undefined | null =
+    null;
 
   constructor() {
     super({ elementTag: 'dialog', classes: [styles.modal] });
@@ -43,6 +46,7 @@ class Modal extends BaseComponent<'dialog'> {
       isCloseOnClickWithin = false,
       isScrollBlocked = true,
       needAnimationDelay = true,
+      beforeCloseCallback = null,
     }: ModalOptions = {},
   ): void {
     if (this.isOpen) return;
@@ -51,6 +55,8 @@ class Modal extends BaseComponent<'dialog'> {
     this.isCloseOnClickWithin = isCloseOnClickWithin;
     this.isScrollBlocked = isScrollBlocked;
     this.needAnimationDelay = needAnimationDelay;
+    this.beforeCloseCallback = beforeCloseCallback;
+    console.log(this.beforeCloseCallback);
 
     if (this.isScrollBlocked) {
       document.body.classList.add(styles.noScroll);
@@ -69,7 +75,7 @@ class Modal extends BaseComponent<'dialog'> {
 
   public closeModal(): void {
     if (this.canBeClosed) {
-      this.getElement().close();
+      this.getElement().requestClose();
       document.body.classList.remove(styles.noScroll);
     }
   }
@@ -85,12 +91,14 @@ class Modal extends BaseComponent<'dialog'> {
       isCloseOnClickWithin = false,
       isScrollBlocked = true,
       needAnimationDelay = true,
+      beforeCloseCallback,
     }: Omit<ModalOptions, 'hasCloseButton'> = {},
   ) {
     this.canBeClosed = canBeClosed;
     this.isCloseOnClickWithin = isCloseOnClickWithin;
     this.isScrollBlocked = isScrollBlocked;
     this.needAnimationDelay = needAnimationDelay;
+    this.beforeCloseCallback = beforeCloseCallback;
 
     if (this.isScrollBlocked) {
       document.body.classList.add(styles.noScroll);
@@ -101,7 +109,6 @@ class Modal extends BaseComponent<'dialog'> {
     if (this.content) {
       this.content.getElement().replaceChildren(component.getElement());
     }
-
   }
 
   private addListeners(): void {
@@ -119,6 +126,12 @@ class Modal extends BaseComponent<'dialog'> {
         },
         this.needAnimationDelay ? ANIMATION_TIMING : 0,
       );
+    });
+
+    this.addListener('cancel', (event?: Event) => {
+      if (this.beforeCloseCallback) {
+        this.beforeCloseCallback(event);
+      }
     });
 
     this.addListener('keydown', (event: Event) => {
