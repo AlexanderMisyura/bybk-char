@@ -27,7 +27,7 @@ import { CUSTOM_EVENTS } from '@/models/constants';
 
 export class Snapshot extends BaseComponent<'div'> {
   private snapshotNameIdInput: BaseComponent<'input'> = input({
-    value: getCharDataFromStorage().id ?? '',
+    value: (getCharDataFromStorage().id || getCharDataFromStorage().name) ?? '',
     classes: [styles.textInput],
     id: 'snapshot-name-id',
     required: true,
@@ -189,12 +189,14 @@ export class Snapshot extends BaseComponent<'div'> {
   private getSnapshotSaveForm(): BaseComponent<'form'> {
     if (!this.snapshotNameIdInput.getElement().value) {
       this.snapshotNameIdInput.getElement().value =
-        getCharDataFromStorage().id ?? '';
+        (getCharDataFromStorage().id || getCharDataFromStorage().name) ?? '';
     }
 
     this.snapshotNameIdInput.addAttributes({
       list: this.getNameIdDatalist().getElement().id,
     });
+
+    this.snapshotNameIdInput.getElement().select();
 
     return form(
       {
@@ -350,6 +352,8 @@ export class Snapshot extends BaseComponent<'div'> {
       return;
     }
 
+    this.snapshotNameIdInput.getElement().value = snapshot.id;
+    console.log(snapshot.id);
     setCharDataToStorage(snapshot);
 
     window.dispatchEvent(new CustomEvent(CUSTOM_EVENTS.SNAPSHOT_LOADED));

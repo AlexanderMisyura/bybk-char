@@ -89,7 +89,7 @@ export class CharSheet extends BaseComponent<'div'> {
   }
 
   public updateCharData() {
-    this.character.name = this.nameInput.getElement().value.trim().trim();
+    this.character.name = this.nameInput.getElement().value.trim();
     this.character.maxVitality = this.mainStats.maxVitalityInput
       .getElement()
       .value.trim();
