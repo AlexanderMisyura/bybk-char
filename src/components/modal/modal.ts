@@ -56,7 +56,6 @@ class Modal extends BaseComponent<'dialog'> {
     this.isScrollBlocked = isScrollBlocked;
     this.needAnimationDelay = needAnimationDelay;
     this.beforeCloseCallback = beforeCloseCallback;
-    console.log(this.beforeCloseCallback);
 
     if (this.isScrollBlocked) {
       document.body.classList.add(styles.noScroll);
