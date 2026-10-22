@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng';
 
 export default defineConfig({
   base: '/bybk-char/',
@@ -20,4 +21,9 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  plugins: [
+    createSvgIconsPlugin({
+      iconDirs: ['src/assets/icons'],
+    }),
+  ],
 });
