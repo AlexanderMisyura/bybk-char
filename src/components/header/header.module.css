@@ -71,6 +71,7 @@
 }
 
 .toggle-button {
+  display: flex;
   width: 40px;
   aspect-ratio: 1;
   padding: 0;
@@ -93,17 +94,12 @@
 }
 
 .toggle-icon {
-  height: 100%;
-  mask-image: url(/bybk-char/expand-down.svg);
-  background-color: currentColor;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  color: inherit;
-  transform: rotate(0) scale(70%);
+  transform: rotate(90deg) scale(55%);
   transition: 0.2s;
+  color: currentColor;
 
   @media (max-width: 550px) {
-    transform: rotate(90deg) scale(70%);
+    transform: rotate(180deg) scale(55%);
   }
 }
 
@@ -113,10 +109,10 @@
       transform: translateY(0);
     }
     .toggle-icon {
-      transform: rotate(180deg) scale(70%);
+      transform: rotate(90deg) scale(55%);
 
       @media (max-width: 550px) {
-        transform: rotate(270deg)  scale(70%);
+        transform: rotate(180deg)  scale(55%);
       }
     }
   }

@@ -1,5 +1,6 @@
 import { BaseComponent } from '../base';
 import { div, button, img } from '../utils';
+import { createSvgChunk } from '@/utils/create-svg-chunk';
 import { ThemeSelector } from '../theme-selector/theme-selector';
 import { Snapshot } from '../snapshot/snapshot';
 import bybkLogo from '../../assets/bybk-logo.png';
@@ -8,9 +9,12 @@ import styles from './header.module.css';
 const snapshot = new Snapshot();
 
 export class Header extends BaseComponent<'header'> {
-  private toggleBtn: BaseComponent<'button'> = button(
-    { classes: [styles.toggleButton] },
-    div({ classes: [styles.toggleIcon] }),
+  private toggleBtn: BaseComponent<'button'> = button({
+    classes: [styles.toggleButton],
+  }).appendSingleSVG(
+    createSvgChunk('icon-right-move', {
+      classes: [styles.toggleIcon],
+    }),
   );
 
   constructor() {
@@ -20,11 +24,9 @@ export class Header extends BaseComponent<'header'> {
       ariaExpanded: 'false',
     });
 
-    const logo = img({ classes: [styles.logo], src: bybkLogo });
     const themeSelector = new ThemeSelector();
 
     this.toggleBtn.addListener('click', () => {
-
       const isExpanded =
         this.getElement().getAttribute('aria-expanded') === 'true';
 
@@ -69,12 +71,34 @@ export class Header extends BaseComponent<'header'> {
       this.addAttributes({ 'aria-expanded': 'true' });
     }
 
+    const openMenuIcon = createSvgChunk('icon-right-move', {
+      classes: [styles.toggleIcon],
+    });
+    const closeMenuIcon = createSvgChunk('icon-left-alignment', {
+      classes: [styles.toggleIcon],
+    });
+
+    const expandedObserver = new MutationObserver((mutationList) => {
+      if (mutationList[0].attributeName === 'aria-expanded') {
+        if (this.getElement().getAttribute('aria-expanded') === 'true') {
+          this.toggleBtn.getElement().replaceChildren(closeMenuIcon);
+        } else {
+          this.toggleBtn.getElement().replaceChildren(openMenuIcon);
+        }
+      }
+    });
+
+    expandedObserver.observe(this.getElement(), {
+      attributes: true,
+      attributeFilter: ['aria-expanded'],
+    });
+
     this.appendChildren(
       div(
         { classes: [styles.wrapper] },
         div(
           { classes: [styles.container] },
-          logo,
+          img({ classes: [styles.logo], src: bybkLogo }),
           div(
             { classes: [styles.flexWrapper] },
             div(
