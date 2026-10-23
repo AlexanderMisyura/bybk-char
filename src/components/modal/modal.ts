@@ -74,7 +74,12 @@ class Modal extends BaseComponent<'dialog'> {
 
   public closeModal(): void {
     if (this.canBeClosed) {
-      this.getElement().requestClose();
+      if (this.getElement().requestClose) {
+        this.getElement().requestClose();
+      } else {
+        this.getElement().close();
+      }
+
       document.body.classList.remove(styles.noScroll);
     }
   }
