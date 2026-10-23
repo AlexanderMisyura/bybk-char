@@ -1,8 +1,5 @@
 import type { Character, CharacterSaved } from '@/models/character';
-import {
-  STORAGE_KEY,
-  INITIAL_CHARACTER
-} from '@/models/constants';
+import { STORAGE_KEY, INITIAL_CHARACTER } from '@/models/constants';
 
 export function getCharDataFromStorage(): Character {
   const storedData = localStorage.getItem(STORAGE_KEY.CHAR);
@@ -21,16 +18,24 @@ export function checkSnapshotExists(snapshotId: string): boolean {
   return snapshots.some((snapshot) => snapshot.id === snapshotId);
 }
 
-export function isCharDataSameAsSnapshot(character: Character, snapshotId: string): boolean {
+export function isCharDataSameAsSnapshot(
+  character: Character,
+  snapshotId: string,
+): boolean {
   const snapshot = getSingleSnapshotFromStorage(snapshotId);
-  return JSON.stringify({...character, timestamp: ''}) === JSON.stringify({...snapshot, timestamp: ''});
+  return (
+    JSON.stringify({ ...character, timestamp: '' }) ===
+    JSON.stringify({ ...snapshot, timestamp: '' })
+  );
 }
 
 export function setSnapshotToStorage(character: CharacterSaved): void {
   const snapshots: CharacterSaved[] = getSnapshotsFromStorage();
 
   if (checkSnapshotExists(character.id)) {
-    const index = snapshots.findIndex((snapshot) => snapshot.id === character.id);
+    const index = snapshots.findIndex(
+      (snapshot) => snapshot.id === character.id,
+    );
     snapshots[index] = character;
   } else {
     snapshots.push(character);
@@ -44,7 +49,24 @@ export function getSnapshotsFromStorage(): CharacterSaved[] {
   return stored ? JSON.parse(stored) : [];
 }
 
-export function getSingleSnapshotFromStorage(snapshotId: string): CharacterSaved | undefined {
+export function getSingleSnapshotFromStorage(
+  snapshotId: string,
+): CharacterSaved | undefined {
   const snapshots = getSnapshotsFromStorage();
   return snapshots.find((snapshot) => snapshot.id === snapshotId);
+}
+
+export function deleteSnapshotsFromStorage(snapshotIds: string[]): void {
+  if (!snapshotIds.length) return;
+
+  const snapshots = getSnapshotsFromStorage();
+
+  const filteredSnapshots = snapshots.filter(
+    (snapshot) => !snapshotIds.includes(snapshot.id),
+  );
+
+  localStorage.setItem(
+    STORAGE_KEY.SNAPSHOTS,
+    JSON.stringify(filteredSnapshots),
+  );
 }
