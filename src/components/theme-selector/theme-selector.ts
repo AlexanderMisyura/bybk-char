@@ -1,13 +1,20 @@
 import { BaseComponent } from '../base';
-import { button, option, span } from '../utils';
+import { button, option, selectedcontent } from '../utils';
 import { STORAGE_KEY } from '@/models/constants';
 import styles from './theme-selector.module.css';
+import { createSvgChunk } from '@/utils/create-svg-chunk';
 
 type ThemeOptions = {
   light: 'light';
   dark: 'dark';
   system: 'system';
 };
+
+const themeOptionsRu = {
+  light: 'Светлая',
+  dark: 'Темная',
+  system: 'Системная',
+}
 
 export class ThemeSelector extends BaseComponent<'select'> {
   private options: ThemeOptions = {
@@ -18,7 +25,8 @@ export class ThemeSelector extends BaseComponent<'select'> {
 
   private selectedTheme: ThemeOptions[keyof ThemeOptions];
 
-  private selectedContent: BaseComponent<'span'> = span({
+  // @ts-expect-error
+  private selectedContent: BaseComponent<'selectedcontent'> = selectedcontent({
     classes: [styles.selectedContent],
   });
 
@@ -26,6 +34,8 @@ export class ThemeSelector extends BaseComponent<'select'> {
     super({
       elementTag: 'select',
       classes: [styles.selector],
+      title: 'Выбор темы',
+      ariaLabel: 'Выбор темы',
     });
 
     this.selectedTheme =
@@ -36,24 +46,25 @@ export class ThemeSelector extends BaseComponent<'select'> {
     this.appendChildren(
       button(
         {},
+        // @ts-expect-error
         this.selectedContent.addClasses(
           styles.selectedContent,
           styles.icon,
           styles[`${this.selectedTheme}Icon`],
         ),
       ),
-      option({
-        value: this.options.light,
-        classes: [styles.option, styles.icon, styles.lightIcon],
-      }),
-      option({
-        value: this.options.dark,
-        classes: [styles.option, styles.icon, styles.darkIcon],
-      }),
-      option({
-        value: this.options.system,
-        classes: [styles.option, styles.icon, styles.systemIcon],
-      }),
+      ...Object.values(this.options).map((themeOption) =>
+        option({
+          value: themeOption,
+          classes: [styles.option],
+          title: themeOptionsRu[themeOption],
+          ariaLabel: `${themeOptionsRu[themeOption]} тема`,
+        }).appendSingleSVG(
+          createSvgChunk(`icon-${themeOption}`, {
+            classes: [styles.themeIcon],
+          }),
+        ),
+      ),
     );
 
     this.element.value = this.selectedTheme;

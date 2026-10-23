@@ -119,6 +119,18 @@ const select = (
     ...children,
   );
 
+const selectedcontent = (
+  // @ts-expect-error
+  properties: UtilityTagProperties<'selectedcontent'>,
+  ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
+  //@ts-expect-error
+): BaseComponent<'selectedcontent'> =>
+  //@ts-expect-error
+  new BaseComponent<'selectedcontent'>(
+    { ...properties, elementTag: 'selectedcontent' },
+    ...children,
+  );
+
 const span = (
   properties: UtilityTagProperties<'span'>,
   ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
@@ -158,6 +170,7 @@ export {
   option,
   p,
   select,
+  selectedcontent,
   span,
   summary,
   textarea,
