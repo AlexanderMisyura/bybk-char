@@ -24,6 +24,7 @@ import {
 
 import styles from './snapshot.module.css';
 import { CUSTOM_EVENTS } from '@/models/constants';
+import { createSvgChunk } from '@/utils/create-svg-chunk';
 
 export class Snapshot extends BaseComponent<'div'> {
   private snapshotNameIdInput: BaseComponent<'input'> = input({
@@ -41,23 +42,58 @@ export class Snapshot extends BaseComponent<'div'> {
 
   public saveOpenModalBtn: BaseComponent<'button'> = button({
     classes: [styles.button],
-    text: 'Сохранить',
+    title: 'Сохранить как',
+    ariaLabel: 'Сохранить как',
     onclick: () => {
       modalController.showModal(this.getSnapshotSaveForm(), {
         hasCloseButton: false,
       });
     },
-  });
+  })
+    .appendSingleSVG(
+      createSvgChunk('icon-save', {
+        classes: [styles.buttonIcon],
+      }),
+    )
+    .appendSingle(
+      span({ classes: [styles.buttonText], text: 'Сохранить как' }),
+    );
 
   public loadOpenModalBtn: BaseComponent<'button'> = button({
     classes: [styles.button],
-    text: 'Загрузить',
+    title: 'Загрузить',
+    ariaLabel: 'Загрузить',
     onclick: () => {
       modalController.showModal(this.getSnapshotLoadForm(), {
         hasCloseButton: false,
       });
     },
-  });
+  })
+    .appendSingleSVG(
+      createSvgChunk('icon-load', {
+        classes: [styles.buttonIcon],
+      }),
+    )
+    .appendSingle(span({ classes: [styles.buttonText], text: 'Загрузить' }));
+
+  public deleteOpenModalBtn: BaseComponent<'button'> = button({
+    classes: [styles.button],
+    title: 'Удаление',
+    ariaLabel: 'Удаление',
+    onclick: () => {
+      modalController.showModal(
+        span({ text: 'TODO' }),
+        { hasCloseButton: false },
+        // this.getSnapshotDeleteForm(), { hasCloseButton: false },
+      );
+    },
+  })
+    .appendSingleSVG(
+      createSvgChunk('icon-delete', {
+        classes: [styles.buttonIcon],
+      }),
+    )
+    .appendSingle(span({ classes: [styles.buttonText], text: 'Удаление' }));
 
   private modalCallback: ((event?: Event) => void) | null = null;
 

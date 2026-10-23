@@ -72,8 +72,8 @@
 
 .toggle-button {
   display: flex;
-  width: 40px;
-  aspect-ratio: 1;
+  width: 45px;
+  height: 40px;
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -94,12 +94,14 @@
 }
 
 .toggle-icon {
-  transform: rotate(90deg) scale(55%);
+  width: 100%;
+  height: 100%;
+  transform: rotate(90deg) scale(60%);
   transition: 0.2s;
   color: currentColor;
 
   @media (max-width: 550px) {
-    transform: rotate(180deg) scale(55%);
+    transform: rotate(180deg) scale(60%);
   }
 }
 
@@ -107,13 +109,6 @@
   &[aria-expanded='true'] {
     .toggle-button {
       transform: translateY(0);
-    }
-    .toggle-icon {
-      transform: rotate(90deg) scale(55%);
-
-      @media (max-width: 550px) {
-        transform: rotate(180deg)  scale(55%);
-      }
     }
   }
 }

@@ -11,8 +11,9 @@ const snapshot = new Snapshot();
 export class Header extends BaseComponent<'header'> {
   private toggleBtn: BaseComponent<'button'> = button({
     classes: [styles.toggleButton],
+    title: 'Открыть меню',
   }).appendSingleSVG(
-    createSvgChunk('icon-right-move', {
+    createSvgChunk('icon-open-menu', {
       classes: [styles.toggleIcon],
     }),
   );
@@ -32,29 +33,19 @@ export class Header extends BaseComponent<'header'> {
 
       this.addAttributes({ 'aria-expanded': `${!isExpanded}` });
 
-      if (window.innerWidth <= 550) {
         if (isExpanded && history.length > 1) {
           history.back();
         } else {
           history.pushState({ menuOpen: true }, '');
         }
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 550) {
-        this.addAttributes({ 'aria-expanded': 'false' });
-      }
     });
 
     window.addEventListener('popstate', () => {
-      if (window.innerWidth <= 550) {
         if (this.getElement().getAttribute('aria-expanded') === 'true') {
           this.addAttributes({ 'aria-expanded': 'false' });
         } else if (history.state?.menuOpen) {
           this.addAttributes({ 'aria-expanded': 'true' });
         }
-      }
     });
 
     this.addListener('keydown', (event: Event) => {
@@ -67,23 +58,36 @@ export class Header extends BaseComponent<'header'> {
       }
     });
 
-    if (window.innerWidth <= 550 && history.state?.menuOpen) {
-      this.addAttributes({ 'aria-expanded': 'true' });
-    }
+    const openMenuIcon = createSvgChunk('icon-open-menu', {
+      classes: [styles.toggleIcon],
+    });
+    const closeMenuIcon = createSvgChunk('icon-close-menu', {
+      classes: [styles.toggleIcon],
+    });
 
-    const openMenuIcon = createSvgChunk('icon-right-move', {
-      classes: [styles.toggleIcon],
-    });
-    const closeMenuIcon = createSvgChunk('icon-left-alignment', {
-      classes: [styles.toggleIcon],
-    });
+    if (history.state?.menuOpen) {
+      this.addAttributes({ 'aria-expanded': 'true' });
+      this.toggleBtn.getElement().replaceChildren(closeMenuIcon);
+      this.toggleBtn.addAttributes({
+        'aria-label': 'Закрыть меню',
+        title: 'Закрыть меню',
+      });
+    }
 
     const expandedObserver = new MutationObserver((mutationList) => {
       if (mutationList[0].attributeName === 'aria-expanded') {
         if (this.getElement().getAttribute('aria-expanded') === 'true') {
           this.toggleBtn.getElement().replaceChildren(closeMenuIcon);
+          this.toggleBtn.addAttributes({
+            'aria-label': 'Закрыть меню',
+            title: 'Закрыть меню',
+          });
         } else {
           this.toggleBtn.getElement().replaceChildren(openMenuIcon);
+          this.toggleBtn.addAttributes({
+            'aria-label': 'Открыть меню',
+            title: 'Открыть меню',
+          });
         }
       }
     });
@@ -98,13 +102,14 @@ export class Header extends BaseComponent<'header'> {
         { classes: [styles.wrapper] },
         div(
           { classes: [styles.container] },
-          img({ classes: [styles.logo], src: bybkLogo }),
+          img({ classes: [styles.logo], src: bybkLogo, alt: 'BYBK logo' }),
           div(
             { classes: [styles.flexWrapper] },
             div(
               { classes: [styles.buttonContainer] },
               snapshot.saveOpenModalBtn,
               snapshot.loadOpenModalBtn,
+              snapshot.deleteOpenModalBtn,
               div({ classes: [styles.themeSelectorContainer] }, themeSelector),
               this.toggleBtn,
             ),

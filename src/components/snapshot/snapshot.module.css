@@ -10,21 +10,41 @@
 }
 
 .button {
-  padding: 0.3rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border: 1px solid var(--border);
   border-radius: 4px;
   box-shadow: var(--shadow);
-  color: inherit;
+  color: var(--text);
   background-color: var(--bg);
   font-size: inherit;
   flex: auto;
-  min-height: 40px;
-  width: 115px;
+  width: 45px;
+  height: 40px;
 
   @media (max-width: 550px) {
     font-size: 18px;
     min-height: 50px;
     width: 250px;
+    padding: 0.3rem 1rem;
+  }
+}
+
+.button-icon {
+  width: 23px;
+  height: 23px;
+  color: currentColor;
+}
+
+.button-text {
+  display: none;
+
+  @media (max-width: 550px) {
+    display: block;
+    flex: 1;
   }
 }
 

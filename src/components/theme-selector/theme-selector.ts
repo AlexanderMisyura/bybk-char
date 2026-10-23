@@ -1,5 +1,5 @@
 import { BaseComponent } from '../base';
-import { button, option, span, selectedcontent } from '../utils';
+import { button, option, selectedcontent } from '../utils';
 import { STORAGE_KEY } from '@/models/constants';
 import styles from './theme-selector.module.css';
 import { createSvgChunk } from '@/utils/create-svg-chunk';
@@ -9,6 +9,12 @@ type ThemeOptions = {
   dark: 'dark';
   system: 'system';
 };
+
+const themeOptionsRu = {
+  light: 'Светлая',
+  dark: 'Темная',
+  system: 'Системная',
+}
 
 export class ThemeSelector extends BaseComponent<'select'> {
   private options: ThemeOptions = {
@@ -28,6 +34,8 @@ export class ThemeSelector extends BaseComponent<'select'> {
     super({
       elementTag: 'select',
       classes: [styles.selector],
+      title: 'Выбор темы',
+      ariaLabel: 'Выбор темы',
     });
 
     this.selectedTheme =
@@ -49,6 +57,8 @@ export class ThemeSelector extends BaseComponent<'select'> {
         option({
           value: themeOption,
           classes: [styles.option],
+          title: themeOptionsRu[themeOption],
+          ariaLabel: `${themeOptionsRu[themeOption]} тема`,
         }).appendSingleSVG(
           createSvgChunk(`icon-${themeOption}`, {
             classes: [styles.themeIcon],
