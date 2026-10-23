@@ -119,6 +119,48 @@ export class Snapshot extends BaseComponent<'div'> {
     });
   }
 
+  private getConfirmDelete(snapshotNameIdsToDelete: string[]) {
+    return form(
+      {
+        classes: [styles.formFlexWrapper],
+        onsubmit: (e: SubmitEvent) => {
+          e.preventDefault();
+          this.deleteSnapshots(snapshotNameIdsToDelete);
+          modalController.modalControls.closeModal();
+        },
+      },
+      p({
+        text: 'Удалить выбранные листы персонажа?',
+        classes: [styles.modalHeading],
+      }),
+      div(
+        {
+          classes: [styles.confirmDeleteFlexWrapper],
+        },
+        ...snapshotNameIdsToDelete.map((snapshotNameId) => {
+          return span({
+            text: snapshotNameId,
+            classes: [styles.deleteItem],
+          });
+        }),
+      ),
+      div(
+        { classes: [styles.buttonContainer] },
+        button({
+          type: 'submit',
+          classes: [styles.button],
+          text: 'Удалить',
+        }),
+        button({
+          type: 'button',
+          classes: [styles.button],
+          text: 'Отмена',
+          onclick: () => modalController.modalControls.closeModal(),
+        }),
+      ),
+    );
+  }
+
   private getSnapshotDeleteForm() {
     const snapshots = getSnapshotsFromStorage();
 
@@ -137,17 +179,9 @@ export class Snapshot extends BaseComponent<'div'> {
             const snapshotNameIdsToDelete =
               snapshotsFormData.getAll('snapshot-name-id');
 
-            deleteSnapshotsFromStorage(snapshotNameIdsToDelete as string[]);
-
-            const currentCharData = getCharDataFromStorage();
-            if (
-              currentCharData.id &&
-              snapshotNameIdsToDelete.includes(currentCharData.id)
-            ) {
-              setCharDataToStorage({ ...currentCharData, id: '' });
-            }
-
-            modalController.modalControls.closeModal();
+            modalController.renewModalContent(
+              this.getConfirmDelete(snapshotNameIdsToDelete as string[]),
+            );
           }
         },
       },
@@ -461,5 +495,14 @@ export class Snapshot extends BaseComponent<'div'> {
     setCharDataToStorage(snapshot);
 
     window.dispatchEvent(new CustomEvent(CUSTOM_EVENTS.SNAPSHOT_LOADED));
+  }
+
+  private deleteSnapshots(snapshotNameIds: string[]) {
+    deleteSnapshotsFromStorage(snapshotNameIds);
+
+    const currentCharData = getCharDataFromStorage();
+    if (currentCharData.id && snapshotNameIds.includes(currentCharData.id)) {
+      setCharDataToStorage({ ...currentCharData, id: '' });
+    }
   }
 }

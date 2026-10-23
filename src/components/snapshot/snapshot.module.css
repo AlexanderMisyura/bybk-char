@@ -149,6 +149,23 @@
   }
 }
 
+.confirm-delete-flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: calc(100dvh - 300px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+
+  @media (max-width: 550px) {
+    max-height: calc(100dvh - 400px);
+  }
+}
+
 .delete-label__text {
   flex: 1;
+}
+
+.delete-item {
+  text-align: center;
 }
