@@ -15,5 +15,8 @@
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "vite-plugin-svg-icons-ng": "^1.10.0"
+  },
+  "dependencies": {
+    "pollyroll": "^0.6.0"
   }
 }
