@@ -32,6 +32,6 @@
   box-shadow: var(--shadow);
 
   &:invalid {
-    border-color: red;
+    border-color: var(--border-invalid);
   }
 }

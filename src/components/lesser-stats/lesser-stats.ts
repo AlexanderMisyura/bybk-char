@@ -54,7 +54,7 @@ export class LesserStats extends BaseComponent<'div'> {
 
       div(
         { classes: [styles.stat] },
-        label({ htmlFor: 'damage', text: 'УРОН 1к6 +' }),
+        label({ htmlFor: 'damage', text: 'УРОН 1d6 +' }),
         this.damageInput,
         div({ classes: [styles.stat] }, this.damageButton, this.damageOutput),
       ),
