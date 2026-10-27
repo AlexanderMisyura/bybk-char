@@ -1,14 +1,9 @@
 import { BaseComponent } from '../base';
 import { button, option, selectedcontent } from '../utils';
 import { STORAGE_KEY } from '@/models/constants';
-import styles from './theme-selector.module.css';
 import { createSvgChunk } from '@/utils/create-svg-chunk';
-
-type ThemeOptions = {
-  light: 'light';
-  dark: 'dark';
-  system: 'system';
-};
+import { THEME_OPTIONS } from '@/models/constants';
+import styles from './theme-selector.module.css';
 
 const themeOptionsRu = {
   light: 'Светлая',
@@ -17,13 +12,9 @@ const themeOptionsRu = {
 }
 
 export class ThemeSelector extends BaseComponent<'select'> {
-  private options: ThemeOptions = {
-    light: 'light',
-    dark: 'dark',
-    system: 'system',
-  } as const;
+  private options = THEME_OPTIONS;
 
-  private selectedTheme: ThemeOptions[keyof ThemeOptions];
+  private selectedTheme: keyof typeof THEME_OPTIONS;
 
   // @ts-expect-error
   private selectedContent: BaseComponent<'selectedcontent'> = selectedcontent({
@@ -41,7 +32,7 @@ export class ThemeSelector extends BaseComponent<'select'> {
     this.selectedTheme =
       (localStorage.getItem(
         STORAGE_KEY.THEME,
-      ) as ThemeOptions[keyof ThemeOptions]) ?? this.options.system;
+      ) as keyof typeof THEME_OPTIONS) ?? this.options.system;
 
     this.appendChildren(
       button(
@@ -72,7 +63,7 @@ export class ThemeSelector extends BaseComponent<'select'> {
 
     this.addListener('change', () => {
       this.selectedTheme = this.element
-        .value as ThemeOptions[keyof ThemeOptions];
+        .value as keyof typeof THEME_OPTIONS;
 
       this.selectedContent
         .removeClasses(styles.lightIcon, styles.darkIcon, styles.systemIcon)

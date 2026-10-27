@@ -1,3 +1,4 @@
+import type { SkinRef } from 'pollyroll';
 import type { Character } from './character';
 
 export const STORAGE_KEY = {
@@ -32,3 +33,9 @@ export const INITIAL_CHARACTER: Character = {
 };
 
 export const ANIMATION_TIMING = 200;
+
+export const  THEME_OPTIONS = {
+    light: 'light',
+    dark: 'dark',
+    system: 'system',
+  } as const;
