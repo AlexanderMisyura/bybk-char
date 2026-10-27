@@ -3,6 +3,7 @@ import { textarea, input, label, form, p, div, span } from '@/components/utils';
 import { LesserStats } from '../lesser-stats/lesser-stats';
 import { MainStats } from '../main-stats/main-stats';
 import { Skills } from '../skills/skills';
+import { RollDiceTray } from '../roll-dice-tray/roll-dice-tray';
 import type { Character } from '@/models/character';
 import {
   getCharDataFromStorage,
@@ -36,6 +37,8 @@ export class CharSheet extends BaseComponent<'div'> {
 
   private skills = new Skills(this.character ?? null);
 
+  private rollDiceTray = new RollDiceTray();
+
   public form: BaseComponent<'form'> = form(
     { classes: [styles.form] },
     div(
@@ -46,6 +49,7 @@ export class CharSheet extends BaseComponent<'div'> {
 
     this.mainStats,
     this.lesserStats,
+    this.rollDiceTray,
 
     div(
       { classes: [styles.container] },
@@ -82,6 +86,11 @@ export class CharSheet extends BaseComponent<'div'> {
       setCharDataToStorage(this.character);
     });
 
+    this.rollDiceTray.rollInput.addListener('input', () => {
+      this.updateCharData();
+      setCharDataToStorage(this.character);
+    });
+
     window.addEventListener(CUSTOM_EVENTS.SNAPSHOT_LOADED, () => {
       const charData = getCharDataFromStorage();
       this.updateCharListFields(charData);
@@ -108,6 +117,7 @@ export class CharSheet extends BaseComponent<'div'> {
     this.character.damageModifier = this.lesserStats.damageInput
       .getElement()
       .value.trim();
+    this.character.diceRoll = this.rollDiceTray.rollInput.getElement().value.trim();
     this.character.items = this.itemsInput.getElement().value.trim();
     this.character.skills = this.skills.getSkills();
     this.character.other = this.otherInput.getElement().value.trim();
@@ -118,16 +128,17 @@ export class CharSheet extends BaseComponent<'div'> {
   }
 
   public updateCharListFields(character: Character) {
-    this.nameInput.getElement().value = character.name;
-    this.mainStats.maxVitalityInput.getElement().value = character.maxVitality;
-    this.mainStats.vitalityInput.getElement().value = character.vitality;
-    this.mainStats.physicalInput.getElement().value = character.physical;
-    this.mainStats.mentalInput.getElement().value = character.mental;
-    this.lesserStats.armorInput.getElement().value = character.armor;
-    this.lesserStats.damageInput.getElement().value = character.damageModifier;
-    this.itemsInput.getElement().value = character.items;
+    this.nameInput.getElement().value = character.name ?? '';
+    this.mainStats.maxVitalityInput.getElement().value = character.maxVitality ?? '';
+    this.mainStats.vitalityInput.getElement().value = character.vitality ?? '';
+    this.mainStats.physicalInput.getElement().value = character.physical ?? '';
+    this.mainStats.mentalInput.getElement().value = character.mental ?? '';
+    this.lesserStats.armorInput.getElement().value = character.armor ?? '';
+    this.lesserStats.damageInput.getElement().value = character.damageModifier ?? '';
+    this.rollDiceTray.rollInput.getElement().value = character.diceRoll ?? '';
+    this.itemsInput.getElement().value = character.items ?? '';
     this.skills.updateSkills(character.skills);
-    this.otherInput.getElement().value = character.other;
+    this.otherInput.getElement().value = character.other ?? '';
 
     this.updateCharData();
   }
