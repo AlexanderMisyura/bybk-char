@@ -8,6 +8,7 @@ export type Character = {
   mental: string;
   armor: string;
   damageModifier: string;
+  diceRoll: string;
   items: string;
   skills: {
     description: string;
