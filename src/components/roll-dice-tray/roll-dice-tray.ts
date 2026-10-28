@@ -33,6 +33,12 @@ export class RollDiceTray extends BaseComponent<'details'> {
     createSvgChunk('icon-dice', { classes: [styles.rollIcon] }),
   );
 
+  private rollForm: BaseComponent<'form'> = form(
+    { classes: [styles.rollForm] },
+    this.rollButton,
+    this.rollInput,
+  );
+
   private rollResult: BaseComponent<'span'> = span({
     classes: [styles.rollResult],
   });
@@ -54,33 +60,10 @@ export class RollDiceTray extends BaseComponent<'details'> {
     });
 
     this.appendChildren(
-      summary({ classes: [styles.summary], text: 'КУБЫ' }),
+      summary({ classes: [styles.summary], text: 'БРОСКИ' }),
       div(
         { classes: [styles.flexWrapper] },
-        form(
-          {
-            classes: [styles.rollForm],
-            onsubmit: async (e: Event) => {
-              e.preventDefault();
-              this.rollInput.getElement().setCustomValidity('');
-
-              try {
-                const roll = createRoll(this.rollInput.getElement().value);
-                const result = await tray.playRoll(roll);
-
-                this.rollResult.setText(formatRoll(roll, result));
-              } catch (error) {
-                if (error instanceof Error) {
-                  this.rollInput
-                    .getElement()
-                    .setCustomValidity(`Ошибка ввода - ${error.message}`);
-                }
-              }
-            },
-          },
-          this.rollButton,
-          this.rollInput,
-        ),
+        this.rollForm,
         div({}, span({ text: 'Результат: ' }), this.rollResult),
         this.trayContainer,
       ),
@@ -91,6 +74,23 @@ export class RollDiceTray extends BaseComponent<'details'> {
       sound: 0.5,
       dieScale: 2.5,
       skin: DICE_SKIN.WHITE_PLASTIC,
+    });
+
+    this.rollForm.addListener('submit', async (e: Event) => {
+      e.preventDefault();
+
+      try {
+        const roll = createRoll(this.rollInput.getElement().value);
+        const result = await tray.playRoll(roll);
+
+        this.rollResult.setText(formatRoll(roll, result));
+      } catch (error) {
+        if (error instanceof Error) {
+          this.rollInput
+            .getElement()
+            .setCustomValidity(`Ошибка ввода - ${error.message}`);
+        }
+      }
     });
 
     const themeObserver = new MutationObserver((mutationList) => {
@@ -130,5 +130,11 @@ export class RollDiceTray extends BaseComponent<'details'> {
       containerRect.width - PADDING_SHIFT * 2;
     this.rollCanvas.getElement().height =
       containerRect.height - PADDING_SHIFT * 2;
+  }
+
+  public makeRoll(roll: string) {
+    this.rollInput.getElement().value = roll;
+    this.rollInput.getElement().dispatchEvent(new Event('input'));
+    this.rollForm.getElement().dispatchEvent(new Event('submit'));
   }
 }

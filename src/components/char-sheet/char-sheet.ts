@@ -33,11 +33,14 @@ export class CharSheet extends BaseComponent<'div'> {
 
   private mainStats = new MainStats(this.character ?? null);
 
-  private lesserStats = new LesserStats(this.character ?? null);
+  private rollDiceTray = new RollDiceTray();
+
+  private lesserStats = new LesserStats(
+    this.character ?? null,
+    this.rollDiceTray.makeRoll.bind(this.rollDiceTray),
+  );
 
   private skills = new Skills(this.character ?? null);
-
-  private rollDiceTray = new RollDiceTray();
 
   public form: BaseComponent<'form'> = form(
     { classes: [styles.form] },
@@ -117,7 +120,9 @@ export class CharSheet extends BaseComponent<'div'> {
     this.character.damageModifier = this.lesserStats.damageInput
       .getElement()
       .value.trim();
-    this.character.diceRoll = this.rollDiceTray.rollInput.getElement().value.trim();
+    this.character.diceRoll = this.rollDiceTray.rollInput
+      .getElement()
+      .value.trim();
     this.character.items = this.itemsInput.getElement().value.trim();
     this.character.skills = this.skills.getSkills();
     this.character.other = this.otherInput.getElement().value.trim();
@@ -129,12 +134,14 @@ export class CharSheet extends BaseComponent<'div'> {
 
   public updateCharListFields(character: Character) {
     this.nameInput.getElement().value = character.name ?? '';
-    this.mainStats.maxVitalityInput.getElement().value = character.maxVitality ?? '';
+    this.mainStats.maxVitalityInput.getElement().value =
+      character.maxVitality ?? '';
     this.mainStats.vitalityInput.getElement().value = character.vitality ?? '';
     this.mainStats.physicalInput.getElement().value = character.physical ?? '';
     this.mainStats.mentalInput.getElement().value = character.mental ?? '';
     this.lesserStats.armorInput.getElement().value = character.armor ?? '';
-    this.lesserStats.damageInput.getElement().value = character.damageModifier ?? '';
+    this.lesserStats.damageInput.getElement().value =
+      character.damageModifier ?? '';
     this.rollDiceTray.rollInput.getElement().value = character.diceRoll ?? '';
     this.itemsInput.getElement().value = character.items ?? '';
     this.skills.updateSkills(character.skills);
