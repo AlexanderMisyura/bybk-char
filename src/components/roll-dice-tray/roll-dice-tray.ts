@@ -70,10 +70,11 @@ export class RollDiceTray extends BaseComponent<'details'> {
 
                 this.rollResult.setText(formatRoll(roll, result));
               } catch (error) {
-                this.rollInput
-                  .getElement()
-                  .setCustomValidity(`Ошибка ввода. Следуйте примеру: 1d6 + 2`);
-                console.error(error);
+                if (error instanceof Error) {
+                  this.rollInput
+                    .getElement()
+                    .setCustomValidity(`Ошибка ввода - ${error.message}`);
+                }
               }
             },
           },
