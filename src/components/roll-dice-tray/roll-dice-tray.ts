@@ -121,10 +121,6 @@ export class RollDiceTray extends BaseComponent<'details'> {
     window.addEventListener('resize', debounce(this.setCanvasSize.bind(this)));
   }
 
-  public getRollInput() {
-    return this.rollInput.getElement().value;
-  }
-
   private setCanvasSize() {
     const containerRect = this.trayContainer
       .getElement()
