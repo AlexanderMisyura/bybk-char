@@ -79,8 +79,6 @@ class Modal extends BaseComponent<'dialog'> {
       } else {
         this.getElement().close();
       }
-
-      document.body.classList.remove(styles.noScroll);
     }
   }
 
@@ -127,6 +125,7 @@ class Modal extends BaseComponent<'dialog'> {
           this.content?.removeSelf();
           this.getElement().remove();
           this.isOpen = false;
+          document.body.classList.remove(styles.noScroll);
         },
         this.needAnimationDelay ? ANIMATION_TIMING : 0,
       );
