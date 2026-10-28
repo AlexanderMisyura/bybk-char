@@ -32,6 +32,7 @@
   transition: transform 0.2s;
   font-size: 16px;
   height: 56px;
+  z-index: 1;
 
   &[aria-expanded='true'] {
     transform: translateY(0);

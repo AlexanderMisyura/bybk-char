@@ -59,7 +59,7 @@ body:has(header[aria-expanded='true']) .char-sheet {
   box-shadow: var(--shadow);
 
   &:invalid {
-    border-color: red;
+    border-color: var(--border-invalid);
   }
 }
 

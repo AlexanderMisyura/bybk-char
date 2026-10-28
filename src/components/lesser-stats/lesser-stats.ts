@@ -3,17 +3,16 @@ import { BaseComponent } from '../base';
 import { button, div, input, label, span } from '../utils';
 import { DAMAGE_DIE } from '@/models/constants';
 import styles from './lesser-stats.module.css';
+import { createSvgChunk } from '@/utils/create-svg-chunk';
 
 export class LesserStats extends BaseComponent<'div'> {
-  public damageOutput: BaseComponent<'span'>;
-
   public damageButton: BaseComponent<'button'>;
 
   public armorInput: BaseComponent<'input'>;
 
   public damageInput: BaseComponent<'input'>;
 
-  constructor(character: Character) {
+  constructor(character: Character, makeRoll: (roll: string) => void) {
     super({
       elementTag: 'div',
       classes: [styles.container],
@@ -37,13 +36,12 @@ export class LesserStats extends BaseComponent<'div'> {
       max: '2',
     });
 
-    this.damageOutput = span({});
-
     this.damageButton = button({
-      text: '🎲',
       type: 'button',
       classes: [styles.rollButton],
-    });
+    }).appendSingleSVG(
+      createSvgChunk('icon-dice-six', { classes: [styles.rollIcon] }),
+    );
 
     this.appendChildren(
       label(
@@ -54,22 +52,18 @@ export class LesserStats extends BaseComponent<'div'> {
 
       div(
         { classes: [styles.stat] },
-        label({ htmlFor: 'damage', text: 'УРОН 1к6 +' }),
+        label({ htmlFor: 'damage', text: 'УРОН 1d6 +' }),
         this.damageInput,
-        div({ classes: [styles.stat] }, this.damageButton, this.damageOutput),
+        div({ classes: [styles.stat] }, this.damageButton),
       ),
     );
 
     this.damageButton.getElement().addEventListener('click', () => {
-      this.damageOutput.setText('');
       const damageModifier = Number(character?.damageModifier) ?? 0;
-      const diceRoll = Math.floor(Math.random() * DAMAGE_DIE) + 1;
-      const result = diceRoll + damageModifier;
-      setTimeout(() => {
-        this.damageOutput.setText(
-          `бросок 1к${DAMAGE_DIE}${Math.sign(damageModifier) >= 0 ? '+' : '-'}${Math.abs(damageModifier)} : ${diceRoll}${Math.sign(damageModifier) >= 0 ? '+' : '-'}${Math.abs(damageModifier)} = ${result}`,
-        );
-      }, 100);
+
+      makeRoll(
+        `1d${DAMAGE_DIE}${damageModifier === 0 ? '' : `${Math.sign(damageModifier) > 0 ? ' + ' : ' - '}${Math.abs(damageModifier)}`}`,
+      );
     });
   }
 }

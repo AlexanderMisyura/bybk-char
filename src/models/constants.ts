@@ -24,6 +24,7 @@ export const INITIAL_CHARACTER: Character = {
   mental: '',
   armor: '',
   damageModifier: '',
+  diceRoll: '',
   items: '',
   skills: Array.from({ length: SKILLS_NUMBER }).map(() => ({
     description: '',
@@ -39,3 +40,20 @@ export const  THEME_OPTIONS = {
     dark: 'dark',
     system: 'system',
   } as const;
+
+export const DICE_SKIN = {
+  WHITE_PLASTIC: {
+    material: 'stone',
+    color: ['#f4f1ea', '#dad6ce'],
+    labelColor: '#b32a20',
+    labelStyle: 'engraved',
+    pattern: 'marble',
+  } as SkinRef,
+  OBSIDIAN_STONE: {
+    material: 'stone',
+    color: ['#0b0b0f', '#2c2c36'],
+    labelColor: '#df736f',
+    labelStyle: 'engraved',
+    pattern: 'marble',
+  } as SkinRef,
+};

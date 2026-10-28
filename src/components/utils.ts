@@ -30,6 +30,15 @@ const button = (
     ...children,
   );
 
+const canvas = (
+  properties: UtilityTagProperties<'canvas'>,
+  ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
+): BaseComponent<'canvas'> =>
+  new BaseComponent<'canvas'>(
+    { ...properties, elementTag: 'canvas' },
+    ...children,
+);
+
 const datalist = (
   properties: UtilityTagProperties<'datalist'>,
   ...children: BaseComponent<keyof HTMLElementTagNameMap>[]
@@ -157,6 +166,7 @@ export {
   a,
   aside,
   button,
+  canvas,
   datalist,
   details,
   div,
