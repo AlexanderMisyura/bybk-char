@@ -33,26 +33,27 @@ export class Header extends BaseComponent<'header'> {
 
       this.addAttributes({ 'aria-expanded': `${!isExpanded}` });
 
-        if (isExpanded && history.length > 1) {
-          history.back();
-        } else {
-          history.pushState({ menuOpen: true }, '');
-        }
+      if (isExpanded && history.length > 1) {
+        history.back();
+      } else {
+        history.pushState({ menuOpen: true }, '');
+      }
     });
 
     window.addEventListener('popstate', () => {
-        if (this.getElement().getAttribute('aria-expanded') === 'true') {
-          this.addAttributes({ 'aria-expanded': 'false' });
-        } else if (history.state?.menuOpen) {
-          this.addAttributes({ 'aria-expanded': 'true' });
-        }
+      if (this.getElement().getAttribute('aria-expanded') === 'true') {
+        this.addAttributes({ 'aria-expanded': 'false' });
+      } else if (history.state?.menuOpen) {
+        this.addAttributes({ 'aria-expanded': 'true' });
+      }
     });
 
     window.addEventListener('keydown', (event: Event) => {
       if (
         event instanceof KeyboardEvent &&
-        event.key === 'Escape' &&
-        this.getElement().getAttribute('aria-expanded') === 'true'
+        event?.key === 'Escape' &&
+        this.getElement().getAttribute('aria-expanded') === 'true' &&
+        !document.querySelector('dialog[open]')
       ) {
         this.toggleBtn.getElement().click();
       }
