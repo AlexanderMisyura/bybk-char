@@ -107,6 +107,7 @@
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       color: var(--text-h);
+      background-color: var(--accent-bg-alt);
     }
   }
 }

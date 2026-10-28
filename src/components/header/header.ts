@@ -48,7 +48,7 @@ export class Header extends BaseComponent<'header'> {
         }
     });
 
-    this.addListener('keydown', (event: Event) => {
+    window.addEventListener('keydown', (event: Event) => {
       if (
         event instanceof KeyboardEvent &&
         event.key === 'Escape' &&
