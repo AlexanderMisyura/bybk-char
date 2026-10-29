@@ -1,8 +1,11 @@
 .char-sheet {
   display: flex;
   flex-direction: column;
+  min-height: 100dvh;
+  box-sizing: border-box;
   gap: 1rem;
   padding: 1rem;
+  width: 100%;
   max-width: var(--page-max-width);
   margin: 0 auto;
   background-color: var(--bg-semi-transparent);
@@ -64,6 +67,13 @@ body:has(header[aria-expanded='true']) .char-sheet {
 }
 
 .large-text-input {
-  width: 550px;
+  width: stretch;
+  max-width: 550px;
   height: 6rem;
+}
+
+.summary {
+  cursor: pointer;
+  user-select: none;
+  max-width: 568px;
 }

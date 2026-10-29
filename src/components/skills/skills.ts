@@ -1,6 +1,6 @@
 import type { Character } from '@/models/character';
 import { BaseComponent } from '../base';
-import { div, input, textarea } from '../utils';
+import { details, div, input, summary, textarea } from '../utils';
 
 import { SKILLS_NUMBER } from '@/models/constants';
 import styles from './skills.module.css';
@@ -38,14 +38,17 @@ export class Skills extends BaseComponent<'div'> {
     );
 
     this.appendChildren(
-      div({ text: 'УМЕНИЯ' }),
-      div(
-        { classes: [styles.skillsContainer] },
-        ...Array.from({ length: SKILLS_NUMBER }).map((_, index) =>
-          div(
-            { classes: [styles.skill] },
-            this.skillDescriptions[index],
-            this.skillsUsage[index],
+      details(
+        { open: true },
+        summary({ classes: [styles.summary], text: 'УМЕНИЯ' }),
+        div(
+          { classes: [styles.skillsContainer] },
+          ...Array.from({ length: SKILLS_NUMBER }).map((_, index) =>
+            div(
+              { classes: [styles.skill] },
+              this.skillDescriptions[index],
+              this.skillsUsage[index],
+            ),
           ),
         ),
       ),

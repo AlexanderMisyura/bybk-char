@@ -32,3 +32,9 @@
   width: 30px;
   align-self: flex-end;
 }
+
+.summary {
+  cursor: pointer;
+  user-select: none;
+  max-width: 568px;
+}

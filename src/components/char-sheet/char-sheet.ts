@@ -1,5 +1,14 @@
 import { BaseComponent } from '@/components/base';
-import { textarea, input, label, form, p, div, span } from '@/components/utils';
+import {
+  textarea,
+  input,
+  label,
+  form,
+  div,
+  span,
+  details,
+  summary,
+} from '@/components/utils';
 import { LesserStats } from '../lesser-stats/lesser-stats';
 import { MainStats } from '../main-stats/main-stats';
 import { Skills } from '../skills/skills';
@@ -53,21 +62,22 @@ export class CharSheet extends BaseComponent<'div'> {
     this.mainStats,
     this.lesserStats,
     this.rollDiceTray,
+    this.skills,
 
     div(
       { classes: [styles.container] },
-      label(
-        {},
-        p({ text: 'ЗНАЧИМЫЕ ПРЕДМЕТЫ' }),
+      details(
+        { open: true },
+        summary({ classes: [styles.summary], text: 'ЗНАЧИМЫЕ ПРЕДМЕТЫ' }),
         div({ classes: [styles.flexWrapper] }, this.itemsInput),
       ),
     ),
-    this.skills,
+
     div(
       { classes: [styles.container] },
-      label(
-        {},
-        p({ text: 'ДРУГОЕ' }),
+      details(
+        { open: true },
+        summary({ classes: [styles.summary], text: 'ДРУГОЕ' }),
         div({ classes: [styles.flexWrapper] }, this.otherInput),
       ),
     ),
