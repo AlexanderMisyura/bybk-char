@@ -28,22 +28,6 @@ import { CUSTOM_EVENTS } from '@/models/constants';
 import { createSvgChunk } from '@/utils/create-svg-chunk';
 
 export class Snapshot extends BaseComponent<'div'> {
-  private noSavedSnapshots = div(
-    { classes: [styles.formFlexWrapper] },
-    p({
-      text: 'На этом устройстве нет сохраненных листов персонажа',
-      classes: [styles.modalHeading],
-    }),
-    div(
-      { classes: [styles.buttonContainer] },
-      button({
-        classes: [styles.button],
-        text: 'Закрыть',
-        onclick: () => modalController.modalControls.closeModal(),
-      }),
-    ),
-  );
-
   private snapshotNameIdInput: BaseComponent<'input'> = input({
     value: (getCharDataFromStorage().id || getCharDataFromStorage().name) ?? '',
     classes: [styles.textInput],
@@ -165,7 +149,9 @@ export class Snapshot extends BaseComponent<'div'> {
     const snapshots = getSnapshotsFromStorage();
 
     if (!snapshots.length) {
-      return this.noSavedSnapshots;
+      return this.getMessage(
+        'На этом устройстве нет сохраненных листов персонажа',
+      );
     }
 
     return form(
@@ -178,6 +164,22 @@ export class Snapshot extends BaseComponent<'div'> {
             const snapshotsFormData = new FormData(e.currentTarget);
             const snapshotNameIdsToDelete =
               snapshotsFormData.getAll('snapshot-name-id');
+            console.log(snapshotNameIdsToDelete);
+
+            if (!snapshotNameIdsToDelete.length) {
+              this.modalCallback = (event) => {
+                event?.preventDefault();
+                modalController.renewModalContent(this.getSnapshotDeleteForm());
+                this.modalCallback = null;
+              };
+
+              modalController.renewModalContent(
+                this.getMessage('Отметьте листы персонажа для удаления'),
+                { beforeCloseCallback: this.modalCallback },
+              );
+
+              return;
+            }
 
             modalController.renewModalContent(
               this.getConfirmDelete(snapshotNameIdsToDelete as string[]),
@@ -236,7 +238,9 @@ export class Snapshot extends BaseComponent<'div'> {
     const snapshots = getSnapshotsFromStorage();
 
     if (!snapshots.length) {
-      return this.noSavedSnapshots;
+      return this.getMessage(
+        'На этом устройстве нет сохраненных листов персонажа',
+      );
     }
 
     const currentCharData = getCharDataFromStorage();
@@ -504,5 +508,23 @@ export class Snapshot extends BaseComponent<'div'> {
     if (currentCharData.id && snapshotNameIds.includes(currentCharData.id)) {
       setCharDataToStorage({ ...currentCharData, id: '' });
     }
+  }
+
+  private getMessage(text: string) {
+    return div(
+      { classes: [styles.formFlexWrapper] },
+      p({
+        text,
+        classes: [styles.modalHeading],
+      }),
+      div(
+        { classes: [styles.buttonContainer] },
+        button({
+          classes: [styles.button],
+          text: 'Закрыть',
+          onclick: () => modalController.modalControls.closeModal(),
+        }),
+      ),
+    );
   }
 }
