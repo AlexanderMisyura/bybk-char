@@ -164,7 +164,6 @@ export class Snapshot extends BaseComponent<'div'> {
             const snapshotsFormData = new FormData(e.currentTarget);
             const snapshotNameIdsToDelete =
               snapshotsFormData.getAll('snapshot-name-id');
-            console.log(snapshotNameIdsToDelete);
 
             if (!snapshotNameIdsToDelete.length) {
               this.modalCallback = (event) => {
