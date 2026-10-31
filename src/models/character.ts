@@ -11,6 +11,7 @@ export type Character = {
   diceRoll: string;
   items: string;
   skills: {
+    id: string;
     description: string;
     usage: string;
   }[];
