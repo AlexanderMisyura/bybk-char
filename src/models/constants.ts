@@ -12,7 +12,7 @@ export const CUSTOM_EVENTS = {
 }
 
 export const DAMAGE_DIE = 6;
-export const SKILLS_NUMBER = 4;
+export const INITIAL_SKILLS_NUMBER = 3;
 
 export const INITIAL_CHARACTER: Character = {
   id: '',
@@ -26,7 +26,8 @@ export const INITIAL_CHARACTER: Character = {
   damageModifier: '',
   diceRoll: '',
   items: '',
-  skills: Array.from({ length: SKILLS_NUMBER }).map(() => ({
+  skills: Array.from({ length: INITIAL_SKILLS_NUMBER }).map(() => ({
+    id: crypto.randomUUID(),
     description: '',
     usage: '',
   })),
