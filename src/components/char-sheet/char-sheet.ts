@@ -49,7 +49,7 @@ export class CharSheet extends BaseComponent<'div'> {
     this.rollDiceTray.makeRoll.bind(this.rollDiceTray),
   );
 
-  private skills = new Skills(this.character ?? null);
+  private skills = new Skills(this.character);
 
   public form: BaseComponent<'form'> = form(
     { classes: [styles.form] },
