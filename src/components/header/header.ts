@@ -18,6 +18,11 @@ export class Header extends BaseComponent<'header'> {
     }),
   );
 
+  private inertContainer: BaseComponent<'div'> = div({
+    classes: [styles.inertContainer],
+    inert: true,
+  });
+
   constructor() {
     super({
       elementTag: 'header',
@@ -73,6 +78,7 @@ export class Header extends BaseComponent<'header'> {
         'aria-label': 'Закрыть меню',
         title: 'Закрыть меню',
       });
+      this.inertContainer.removeAttributes(['inert']);
     }
 
     const expandedObserver = new MutationObserver((mutationList) => {
@@ -83,12 +89,14 @@ export class Header extends BaseComponent<'header'> {
             'aria-label': 'Закрыть меню',
             title: 'Закрыть меню',
           });
+          this.inertContainer.removeAttributes(['inert']);
         } else {
           this.toggleBtn.getElement().replaceChildren(openMenuIcon);
           this.toggleBtn.addAttributes({
             'aria-label': 'Открыть меню',
             title: 'Открыть меню',
           });
+          this.inertContainer.addAttributes({ inert: 'true' });
         }
       }
     });
@@ -97,6 +105,13 @@ export class Header extends BaseComponent<'header'> {
       attributes: true,
       attributeFilter: ['aria-expanded'],
     });
+
+    this.inertContainer.appendChildren(
+      snapshot.saveOpenModalBtn,
+      snapshot.loadOpenModalBtn,
+      snapshot.deleteOpenModalBtn,
+      div({ classes: [styles.themeSelectorContainer] }, themeSelector),
+    );
 
     this.appendChildren(
       div(
@@ -108,10 +123,7 @@ export class Header extends BaseComponent<'header'> {
             { classes: [styles.flexWrapper] },
             div(
               { classes: [styles.buttonContainer] },
-              snapshot.saveOpenModalBtn,
-              snapshot.loadOpenModalBtn,
-              snapshot.deleteOpenModalBtn,
-              div({ classes: [styles.themeSelectorContainer] }, themeSelector),
+              this.inertContainer,
               this.toggleBtn,
             ),
           ),
