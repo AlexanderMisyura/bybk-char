@@ -12,7 +12,7 @@ import {
 import { LesserStats } from '../lesser-stats/lesser-stats';
 import { MainStats } from '../main-stats/main-stats';
 import { Skills } from '../skills/skills';
-import { RollDiceTray } from '../roll-dice-tray/roll-dice-tray';
+import { rollDiceTray, type RollDiceTray } from '../roll-dice-tray/roll-dice-tray';
 import type { Character } from '@/models/character';
 import {
   getCharDataFromStorage,
@@ -42,7 +42,7 @@ export class CharSheet extends BaseComponent<'div'> {
 
   private mainStats = new MainStats(this.character ?? null);
 
-  private rollDiceTray = new RollDiceTray();
+  private rollDiceTray: RollDiceTray = rollDiceTray;
 
   private lesserStats = new LesserStats(
     this.character ?? null,

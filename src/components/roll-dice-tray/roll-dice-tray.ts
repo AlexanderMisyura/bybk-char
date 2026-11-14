@@ -4,7 +4,7 @@ import { createRoll } from 'pollyroll';
 import { createDiceTray } from 'pollyroll/render';
 import { diceClacks } from 'pollyroll/sounds';
 import { formatRoll } from 'pollyroll/format';
-import { DICE_SKIN, THEME_OPTIONS } from '@/models/constants';
+import { DICE_SKIN, STORAGE_KEY, THEME_OPTIONS } from '@/models/constants';
 import { createSvgChunk } from '@/utils/create-svg-chunk';
 import { debounce } from '@/utils/debounce';
 
@@ -13,7 +13,7 @@ import { getCharDataFromStorage } from '@/utils/char-data';
 
 const PADDING_SHIFT = 8;
 
-export class RollDiceTray extends BaseComponent<'details'> {
+class RollDiceTray extends BaseComponent<'details'> {
   public rollInput: BaseComponent<'input'> = input({
     type: 'text',
     placeholder: '1d6 + 2',
@@ -23,6 +23,9 @@ export class RollDiceTray extends BaseComponent<'details'> {
       this.rollInput.getElement().setCustomValidity('');
     },
   });
+
+  public isMuted: boolean =
+    localStorage.getItem(STORAGE_KEY.IS_MUTED) === 'true';
 
   private rollButton: BaseComponent<'button'> = button({
     type: 'submit',
@@ -52,6 +55,8 @@ export class RollDiceTray extends BaseComponent<'details'> {
     this.rollCanvas,
   );
 
+  private tray: ReturnType<typeof createDiceTray>;
+
   constructor() {
     super({
       elementTag: 'details',
@@ -69,9 +74,9 @@ export class RollDiceTray extends BaseComponent<'details'> {
       ),
     );
 
-    const tray = createDiceTray(this.rollCanvas.getElement(), {
+    this.tray = createDiceTray(this.rollCanvas.getElement(), {
       clacks: diceClacks,
-      sound: 0.5,
+      sound: this.isMuted ? 0 : 0.5,
       dieScale: 2.5,
       skin: DICE_SKIN.WHITE_PLASTIC,
     });
@@ -81,7 +86,7 @@ export class RollDiceTray extends BaseComponent<'details'> {
 
       try {
         const roll = createRoll(this.rollInput.getElement().value);
-        const result = await tray.playRoll(roll);
+        const result = await this.tray.playRoll(roll);
 
         this.rollResult.setText(formatRoll(roll, result));
       } catch (error) {
@@ -98,15 +103,15 @@ export class RollDiceTray extends BaseComponent<'details'> {
         const theme = document.documentElement.getAttribute('data-theme');
 
         if (theme === THEME_OPTIONS.dark) {
-          tray.setSkin(DICE_SKIN.OBSIDIAN_STONE);
+          this.tray.setSkin(DICE_SKIN.OBSIDIAN_STONE);
         } else if (theme === THEME_OPTIONS.light) {
-          tray.setSkin(DICE_SKIN.WHITE_PLASTIC);
+          this.tray.setSkin(DICE_SKIN.WHITE_PLASTIC);
         } else {
           const preferDark = window.matchMedia('(prefers-color-scheme: dark)');
           if (preferDark.matches) {
-            tray.setSkin(DICE_SKIN.OBSIDIAN_STONE);
+            this.tray.setSkin(DICE_SKIN.OBSIDIAN_STONE);
           } else {
-            tray.setSkin(DICE_SKIN.WHITE_PLASTIC);
+            this.tray.setSkin(DICE_SKIN.WHITE_PLASTIC);
           }
         }
       }
@@ -141,4 +146,13 @@ export class RollDiceTray extends BaseComponent<'details'> {
       this.getElement().open = true;
     }
   }
+
+  public toggleMute() {
+    this.isMuted = !this.isMuted;
+    localStorage.setItem(STORAGE_KEY.IS_MUTED, this.isMuted.toString());
+    this.tray.setSound(this.isMuted ? 0 : 0.5);
+  }
 }
+
+const rollDiceTray = new RollDiceTray();
+export { rollDiceTray, type RollDiceTray };

@@ -3,10 +3,16 @@ import { div, button, img } from '../utils';
 import { createSvgChunk } from '@/utils/create-svg-chunk';
 import { ThemeSelector } from '../theme-selector/theme-selector';
 import { Snapshot } from '../snapshot/snapshot';
+import { MuteToggler } from '../mute-toggler/mute-toggler';
+import { rollDiceTray } from '../roll-dice-tray/roll-dice-tray';
 import bybkLogo from '../../assets/bybk-logo.png';
 import styles from './header.module.css';
 
 const snapshot = new Snapshot();
+const muteToggler = new MuteToggler(
+  rollDiceTray.isMuted,
+  rollDiceTray.toggleMute.bind(rollDiceTray),
+);
 
 export class Header extends BaseComponent<'header'> {
   private toggleBtn: BaseComponent<'button'> = button({
@@ -110,6 +116,7 @@ export class Header extends BaseComponent<'header'> {
       snapshot.saveOpenModalBtn,
       snapshot.loadOpenModalBtn,
       snapshot.deleteOpenModalBtn,
+      muteToggler,
       div({ classes: [styles.themeSelectorContainer] }, themeSelector),
     );
 

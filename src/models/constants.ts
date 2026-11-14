@@ -5,6 +5,7 @@ export const STORAGE_KEY = {
   CHAR: 'BYBK_char',
   THEME: 'BYBK_theme',
   SNAPSHOTS: 'BYBK_snapshots',
+  IS_MUTED: 'BYBK_isMuted',
 }
 
 export const CUSTOM_EVENTS = {
