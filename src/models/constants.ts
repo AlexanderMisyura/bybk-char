@@ -48,13 +48,11 @@ export const DICE_SKIN = {
     color: ['#f4f1ea', '#dad6ce'],
     labelColor: '#b32a20',
     labelStyle: 'engraved',
-    pattern: 'marble',
   } as SkinRef,
   OBSIDIAN_STONE: {
     material: 'stone',
     color: ['#0b0b0f', '#2c2c36'],
     labelColor: '#df736f',
     labelStyle: 'engraved',
-    pattern: 'marble',
   } as SkinRef,
 };
