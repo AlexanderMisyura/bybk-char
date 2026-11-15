@@ -62,8 +62,8 @@ export class Snapshot extends BaseComponent<'div'> {
 
   public loadOpenModalBtn: BaseComponent<'button'> = button({
     classes: [styles.button],
-    title: 'Загрузить',
-    ariaLabel: 'Загрузить',
+    title: 'Открыть',
+    ariaLabel: 'Открыть',
     onclick: () => {
       modalController.showModal(this.getSnapshotLoadForm(), {
         hasCloseButton: false,
@@ -71,11 +71,11 @@ export class Snapshot extends BaseComponent<'div'> {
     },
   })
     .appendSingleSVG(
-      createSvgChunk('icon-load', {
+      createSvgChunk('icon-open', {
         classes: [styles.buttonIcon],
       }),
     )
-    .appendSingle(span({ classes: [styles.buttonText], text: 'Загрузить' }));
+    .appendSingle(span({ classes: [styles.buttonText], text: 'Открыть' }));
 
   public deleteOpenModalBtn: BaseComponent<'button'> = button({
     classes: [styles.button],
@@ -307,7 +307,7 @@ export class Snapshot extends BaseComponent<'div'> {
         },
       },
       p({
-        text: 'ЗАГРУЗИТЬ ЛИСТ ПЕРСОНАЖА',
+        text: 'ОТКРЫТЬ ЛИСТ ПЕРСОНАЖА',
         classes: [styles.modalHeading],
       }),
       this.getSnapshotSelect(),
@@ -316,7 +316,7 @@ export class Snapshot extends BaseComponent<'div'> {
         button({
           type: 'submit',
           classes: [styles.button],
-          text: 'Загрузить',
+          text: 'Открыть',
         }),
         button({
           type: 'button',

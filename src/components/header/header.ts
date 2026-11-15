@@ -113,8 +113,8 @@ export class Header extends BaseComponent<'header'> {
     });
 
     this.inertContainer.appendChildren(
-      snapshot.saveOpenModalBtn,
       snapshot.loadOpenModalBtn,
+      snapshot.saveOpenModalBtn,
       snapshot.deleteOpenModalBtn,
       muteToggler,
       div({ classes: [styles.themeSelectorContainer] }, themeSelector),
