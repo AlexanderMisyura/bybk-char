@@ -7,7 +7,6 @@ import {
   form,
   input,
   p,
-  span,
   summary,
   textarea,
 } from '../utils';
