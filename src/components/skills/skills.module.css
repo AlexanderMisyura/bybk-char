@@ -51,7 +51,7 @@
   }
 }
 
-.add-skill-button {
+.append-skill-button {
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -64,7 +64,7 @@
   font-size: inherit;
   max-width: 568px;
   width: 100%;
-  height: 30px;
+  height: 35px;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -73,7 +73,7 @@
   }
 }
 
-.add-skill-button-icon {
+.append-skill-button-icon {
   width: 100%;
   height: 100%;
   color: currentColor;

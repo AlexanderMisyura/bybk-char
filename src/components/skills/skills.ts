@@ -7,6 +7,7 @@ import {
   form,
   input,
   p,
+  span,
   summary,
   textarea,
 } from '../utils';
@@ -57,12 +58,14 @@ export class Skills extends BaseComponent<'div'> {
         this.skillsContainer,
         button({
           type: 'button',
-          classes: [styles.addSkillButton],
+          classes: [styles.appendSkillButton],
           title: 'Добавить умение',
           ariaLabel: 'Добавить умение',
           onclick: () => this.addEmptySkill(),
         }).appendSingleSVG(
-          createSvgChunk('icon-plus', { classes: [styles.addSkillButtonIcon] }),
+          createSvgChunk('icon-plus', {
+            classes: [styles.appendSkillButtonIcon],
+          }),
         ),
       ),
     );
@@ -204,7 +207,8 @@ export class Skills extends BaseComponent<'div'> {
     );
     this.skillUsages = this.skillUsages.filter(
       (skill) =>
-        skill.getElement().id.replace('skill-usage-', '') !== skillToDelete.getElement().id,
+        skill.getElement().id.replace('skill-usage-', '') !==
+        skillToDelete.getElement().id,
     );
 
     const storedCharData = getCharDataFromStorage();
