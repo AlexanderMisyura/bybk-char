@@ -140,7 +140,7 @@ class RollDiceTray extends BaseComponent<'details'> {
   public makeRoll(roll: string) {
     this.rollInput.getElement().value = roll;
     this.rollInput.getElement().dispatchEvent(new Event('input'));
-    this.rollForm.getElement().dispatchEvent(new Event('submit'));
+    this.rollForm.getElement().requestSubmit();
 
     if (!this.getElement().open) {
       this.getElement().open = true;
