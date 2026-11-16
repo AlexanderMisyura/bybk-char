@@ -9,7 +9,7 @@ const themeOptionsRu = {
   light: 'Светлая',
   dark: 'Темная',
   system: 'Системная',
-}
+};
 
 export class ThemeSelector extends BaseComponent<'select'> {
   private options = THEME_OPTIONS;
@@ -17,9 +17,14 @@ export class ThemeSelector extends BaseComponent<'select'> {
   private selectedTheme: keyof typeof THEME_OPTIONS;
 
   // @ts-expect-error
-  private selectedContent: BaseComponent<'selectedcontent'> = selectedcontent({
-    classes: [styles.selectedContent],
-  });
+  private selectedContent: BaseComponent<'selectedcontent'> = CSS.supports(
+    'appearance',
+    'base-select',
+  )
+    ? selectedcontent({
+        classes: [styles.selectedContent],
+      })
+    : null;
 
   constructor() {
     super({
@@ -30,44 +35,55 @@ export class ThemeSelector extends BaseComponent<'select'> {
     });
 
     this.selectedTheme =
-      (localStorage.getItem(
-        STORAGE_KEY.THEME,
-      ) as keyof typeof THEME_OPTIONS) ?? this.options.system;
+      (localStorage.getItem(STORAGE_KEY.THEME) as keyof typeof THEME_OPTIONS) ??
+      this.options.system;
 
-    this.appendChildren(
-      button(
-        {},
+    const innerButton = button({});
+    if (this.selectedContent) {
+      innerButton.appendChildren(
         // @ts-expect-error
         this.selectedContent.addClasses(
           styles.selectedContent,
           styles.icon,
           styles[`${this.selectedTheme}Icon`],
         ),
-      ),
-      ...Object.values(this.options).map((themeOption) =>
-        option({
+      );
+    }
+
+    this.appendChildren(
+      innerButton,
+      ...Object.values(this.options).map((themeOption) => {
+        const optionComponent = option({
           value: themeOption,
           classes: [styles.option],
           title: themeOptionsRu[themeOption],
           ariaLabel: `${themeOptionsRu[themeOption]} тема`,
-        }).appendSingleSVG(
-          createSvgChunk(`icon-${themeOption}`, {
-            classes: [styles.themeIcon],
-          }),
-        ),
-      ),
+        });
+
+        if (CSS.supports('appearance', 'base-select')) {
+          optionComponent.appendSingleSVG(
+            createSvgChunk(`icon-${themeOption}`, {
+              classes: [styles.themeIcon],
+            }),
+          );
+        } else {
+          optionComponent.setText(themeOptionsRu[themeOption]);
+        }
+        return optionComponent;
+      }),
     );
 
     this.element.value = this.selectedTheme;
     document.documentElement.dataset.theme = this.selectedTheme;
 
     this.addListener('change', () => {
-      this.selectedTheme = this.element
-        .value as keyof typeof THEME_OPTIONS;
+      this.selectedTheme = this.element.value as keyof typeof THEME_OPTIONS;
 
-      this.selectedContent
-        .removeClasses(styles.lightIcon, styles.darkIcon, styles.systemIcon)
-        .addClasses(styles[`${this.selectedTheme}Icon`]);
+      if (this.selectedContent) {
+        this.selectedContent
+          .removeClasses(styles.lightIcon, styles.darkIcon, styles.systemIcon)
+          .addClasses(styles[`${this.selectedTheme}Icon`]);
+      }
 
       document.documentElement.dataset.theme = this.selectedTheme;
       localStorage.setItem(STORAGE_KEY.THEME, this.selectedTheme);

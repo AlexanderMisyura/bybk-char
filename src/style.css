@@ -141,15 +141,17 @@ p {
   left: 0;
 }
 
-select,
-::picker(select) {
-  appearance: base-select;
-}
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
 
-::picker(select) {
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  box-shadow: var(--shadow);
+  ::picker(select) {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+  }
 }
 
 button {
