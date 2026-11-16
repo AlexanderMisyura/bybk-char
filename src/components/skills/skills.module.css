@@ -25,7 +25,6 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   box-shadow: var(--shadow);
-  width: -webkit-fill-available;
   width: stretch;
   max-width: 550px;
   height: 4rem;

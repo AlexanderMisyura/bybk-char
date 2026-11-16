@@ -67,8 +67,7 @@ body:has(header[aria-expanded='true']) .char-sheet {
 }
 
 .large-text-input {
-  width: -webkit-fill-available; 
-  width: stretch; 
+  width: stretch;
   max-width: 550px;
   height: 6rem;
 }
